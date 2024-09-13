@@ -11,7 +11,40 @@ const validate = (taskValue) => {
   }
 };
 
-const tasks = [];
+const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+const buildCards = () => {
+  taskInput.value = "";
+  tasksWrapper.innerHTML = "";
+
+  [...tasks].reverse().forEach((t) => {
+    const card = document.createElement("div");
+    card.setAttribute("class", "card");
+
+    card.addEventListener("click", () => {
+      const index = tasks.findIndex((i) => i.title === t.title);
+
+      tasks[index].isDone = !tasks[index].isDone;
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      buildCards();
+    });
+
+    const title = document.createElement("h4");
+    title.textContent = t.title;
+
+    const indicator = document.createElement("div");
+
+    indicator.setAttribute(
+      "class",
+      `indicator ${t.isDone === true ? "completed" : "not-completed"}`
+    );
+
+    card.append(title);
+    card.append(indicator);
+
+    tasksWrapper.append(card);
+  });
+};
 
 button.addEventListener("click", () => {
   const isValid = validate(taskInput.value);
@@ -27,18 +60,9 @@ button.addEventListener("click", () => {
 
   tasks.push(task);
 
-  taskInput.value = "";
-  tasksWrapper.innerHTML = "";
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 
-  tasks.forEach((t) => {
-    const card = document.createElement("div");
-    card.setAttribute("class", "card");
-
-    const title = document.createElement("h4");
-    title.textContent = t.title;
-
-    card.append(title);
-
-    tasksWrapper.append(card);
-  });
+  buildCards();
 });
+
+buildCards();

@@ -20,6 +20,7 @@
   border-radius: 0.6rem;
   padding: 1rem;
   width: 300px;
+  cursor: pointer;
 }
 
 .form h2 {
@@ -32,4 +33,18 @@
 
 .form button {
   padding: 0.6rem;
+}
+
+.indicator {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+}
+
+.completed {
+  background-color: green;
+}
+
+.not-completed {
+  background-color: rgb(128, 26, 0);
 }
